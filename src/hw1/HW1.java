@@ -12,8 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 public class HW1 {
 
@@ -75,6 +74,7 @@ public class HW1 {
     }
 
     public static void main(String[] args) throws IOException {
+        long beginTime = System.currentTimeMillis();
         hypotheses.clear();
         proved.clear();
         canDeductNotProved.clear();
@@ -106,17 +106,24 @@ public class HW1 {
             int axiomNumber;
             Integer hypothesesNum;
             processImplication(root, i);
-            writer.write("(" + i + ") " + root.toString() + " ");
+            writer.write(new StringBuilder().append("(").append(i).append(") ").append(root.toString()).append(" ").toString());
             if ((hypothesesNum = hypotheses.get(root)) != null) {
-                writer.write("(Предп. " + hypothesesNum + ")\n");
+                writer.write(new StringBuilder().append("(Предп. ").append(hypothesesNum).append(")\n").toString());
             } else if ((axiomNumber = ClassicAxiomsChecker.checkAll(root)) != 0) {
-                writer.write("(Сх. акс. " + axiomNumber + ")\n");
+                writer.write(new StringBuilder().append("(Сх. акс. ").append(axiomNumber).append(")\n").toString());
             } else {
                 Pair<Integer, Integer> mp = canDeductByMP(root);
                 if (mp == null) {
                     writer.write("(Не доказано)\n");
                 } else {
-                    writer.write("(M.P. " + mp.getValue() + ", " + mp.getKey() + ")\n");
+                    writer.write(new StringBuilder()
+                            .append("(M.P. ")
+                            .append(mp.getValue())
+                            .append(", ")
+                            .append(mp.getKey())
+                            .append(")\n")
+                            .toString()
+                    );
                 }
             }
             proved.put(root, i);
@@ -124,5 +131,8 @@ public class HW1 {
         }
         reader.close();
         writer.close();
+
+        long endTime = System.currentTimeMillis();
+        //System.out.println((endTime - beginTime) + " mseconds");
     }
 }
