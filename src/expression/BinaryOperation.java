@@ -14,20 +14,12 @@ public abstract class BinaryOperation extends Expression {
 
     @Override
     public String toTree() {
-        return "(" + getSymbol() + "," + left.toTree() + right.toTree() + ")";
+        return "(" + getSymbol() + "," + left.toTree() + "," + right.toTree() + ")";
     }
 
     @Override
     public int getChildrenCount() {
         return 2;
-    }
-
-    @Override
-    public int hashCode() {
-        if (hash != null) {
-            return hash;
-        }
-        return hash = Objects.hash(getSymbol(), left, right);
     }
 
     public Expression getLeft() {
@@ -36,15 +28,6 @@ public abstract class BinaryOperation extends Expression {
 
     public Expression getRight() {
         return right;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass() || o.hashCode() != hashCode()) return false;
-        BinaryOperation that = (BinaryOperation) o;
-        return Objects.equals(left, that.left) &&
-                Objects.equals(right, that.right);
     }
 
     @Override

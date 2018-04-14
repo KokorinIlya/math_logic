@@ -32,23 +32,7 @@ public class Variable extends Expression {
 
     @Override
     protected void addDescription(StringBuilder builder) {
-        builder.append(name);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass() || o.hashCode() != hashCode()) return false;
-        Variable variable = (Variable) o;
-        return Objects.equals(name, variable.name);
-    }
-
-    @Override
-    public int hashCode() {
-        if (hash != null) {
-            return hash;
-        }
-        return hash = Objects.hash(getSymbol(), name);
+        builder.append("(").append(name).append(")");
     }
 
     @Override

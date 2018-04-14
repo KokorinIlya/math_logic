@@ -16,22 +16,6 @@ public class Negation extends Expression{
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass() || o.hashCode() != hashCode()) return false;
-        Negation negation = (Negation) o;
-        return Objects.equals(negated, negation.negated);
-    }
-
-    @Override
-    public int hashCode() {
-        if (hash != null) {
-            return hash;
-        }
-        return hash = Objects.hash(getSymbol(),  negated);
-    }
-
-    @Override
     public String toTree() {
         return "(" + getSymbol() + negated.toTree() + ")";
     }

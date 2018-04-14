@@ -1,14 +1,10 @@
 package axioms;
 
 import expression.Expression;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import parser.ExpressionLexer;
-import parser.ExpressionParser;
 import utils.ExpressionMaker;
 
 public class ClassicAxioms {
-    public static String[] textAxioms = new String[] {
+    private static String[] textAxioms = new String[] {
             "",
             "A->B->A", //1
             "(A->B)->(A->B->C)->(A->C)", //2

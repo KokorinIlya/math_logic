@@ -1,21 +1,20 @@
 package utils;
 
 import expression.Expression;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import parser.ExpressionLexer;
-import parser.ExpressionParser;
+import handwrittenparser.Parser;
 
 public class ExpressionMaker {
     public static Expression makeExpression(String s) {
-        return new ExpressionParser(
-                new CommonTokenStream(
-                        new ExpressionLexer(
-                                new ANTLRInputStream(
-                                        s
-                                )
-                        )
-                )
-        ).expression().expr;
+        return new Parser(s).parse();
+    }
+
+    public static String prepareForProcessing(String s) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isWhitespace(s.charAt(i))) {
+                builder.append(s.charAt(i));
+            }
+        }
+        return builder.toString();
     }
 }

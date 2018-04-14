@@ -1,9 +1,11 @@
 package expression;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class Expression {
     private String stringExpression = null;
+    private Integer hash = null;
 
     public abstract String toTree();
 
@@ -26,11 +28,18 @@ public abstract class Expression {
     }
 
     @Override
+    public int hashCode() {
+        if (hash == null) {
+            hash = toString().hashCode();
+        }
+        return hash;
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Expression) || hashCode() != obj.hashCode()) {
+        if (obj == null || obj.getClass() != getClass() || obj.hashCode() != hashCode()) {
             return false;
         }
         return toString().equals(obj.toString());
     }
-    //TODO remove from children
 }

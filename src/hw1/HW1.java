@@ -63,22 +63,13 @@ public class HW1 {
         return null;
     }
 
-    private static String prepareForProcessing(String s) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < s.length(); i++) {
-            if (!Character.isWhitespace(s.charAt(i))) {
-                builder.append(s.charAt(i));
-            }
-        }
-        return builder.toString();
-    }
-
     public static void main(String[] args) throws IOException {
         long beginTime = System.currentTimeMillis();
         hypotheses.clear();
         proved.clear();
         canDeductNotProved.clear();
         canDeductProved.clear();
+        StringBuilder builder = new StringBuilder();
 
         Path pathToInputFile = Paths.get("input.txt");
         Path pathToOutputFIle = Paths.get("output.txt");
@@ -89,7 +80,7 @@ public class HW1 {
         String[] hypothesesArray = line.split("," );
         int hypNumber = 1;
         for (int i = 0; i < hypothesesArray.length - 1; i++) {
-            String curHyp = prepareForProcessing(hypothesesArray[i]);
+            String curHyp = ExpressionMaker.prepareForProcessing(hypothesesArray[i]);
             if (!curHyp.isEmpty()) {
                 Expression expression = ExpressionMaker.makeExpression(curHyp);
                 hypotheses.put(expression, hypNumber++);
@@ -98,7 +89,7 @@ public class HW1 {
 
         int i = 1;
         while ((line = reader.readLine()) != null) {
-            line = prepareForProcessing(line);
+            line = ExpressionMaker.prepareForProcessing(line);
             if (line.isEmpty()) {
                 continue;
             }
@@ -106,29 +97,27 @@ public class HW1 {
             int axiomNumber;
             Integer hypothesesNum;
             processImplication(root, i);
-            writer.write(new StringBuilder().append("(").append(i).append(") ").append(root.toString()).append(" ").toString());
+            builder.append("(").append(i).append(") ").append(root.toString()).append(" ");
             if ((hypothesesNum = hypotheses.get(root)) != null) {
-                writer.write(new StringBuilder().append("(Предп. ").append(hypothesesNum).append(")\n").toString());
+                builder.append("(Предп. ").append(hypothesesNum).append(")\n");
             } else if ((axiomNumber = ClassicAxiomsChecker.checkAll(root)) != 0) {
-                writer.write(new StringBuilder().append("(Сх. акс. ").append(axiomNumber).append(")\n").toString());
+                builder.append("(Сх. акс. ").append(axiomNumber).append(")\n");
             } else {
                 Pair<Integer, Integer> mp = canDeductByMP(root);
                 if (mp == null) {
-                    writer.write("(Не доказано)\n");
+                    builder.append("(Не доказано)\n");
                 } else {
-                    writer.write(new StringBuilder()
-                            .append("(M.P. ")
+                    builder.append("(M.P. ")
                             .append(mp.getValue())
                             .append(", ")
                             .append(mp.getKey())
-                            .append(")\n")
-                            .toString()
-                    );
+                            .append(")\n");
                 }
             }
             proved.put(root, i);
             i++;
         }
+        writer.write(builder.toString());
         reader.close();
         writer.close();
 
